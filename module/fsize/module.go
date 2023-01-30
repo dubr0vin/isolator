@@ -1,4 +1,4 @@
-package memory
+package fsize
 
 import (
 	"flag"
@@ -25,7 +25,7 @@ const (
 )
 
 func (m *module) RunAsChild(_ *rpc.Client) error {
-	if err := syscall.Setrlimit(syscall.RLIMIT_AS, &syscall.Rlimit{
+	if err := syscall.Setrlimit(syscall.RLIMIT_FSIZE, &syscall.Rlimit{
 		Cur: *m.limit,
 		Max: *m.limit,
 	}); err != nil {
@@ -35,13 +35,13 @@ func (m *module) RunAsChild(_ *rpc.Client) error {
 }
 
 func (m *module) Settings(flagSet *flag.FlagSet) {
-	m.limit = flagSet.Uint64("memory-limit", DefaultLimit, "Memory limit in bytes")
+	m.limit = flagSet.Uint64("fsize-limit", DefaultLimit, "File size limit in bytes")
 }
 
 func (*module) GetName() string {
-	return "memory"
+	return "fsize"
 }
 
 func (*module) GetDescription() string {
-	return "using unlimited memory"
+	return "writing unlimited data into files"
 }

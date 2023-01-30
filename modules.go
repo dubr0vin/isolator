@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
 	"github.com/dubr0vin/isolator/module/chroot"
+	"github.com/dubr0vin/isolator/module/fsize"
 	"github.com/dubr0vin/isolator/module/ipc"
 	"github.com/dubr0vin/isolator/module/memory"
 	"github.com/dubr0vin/isolator/module/network"
@@ -26,6 +27,7 @@ var allModules = []interfaces.NamedModule{
 	memory.NewModule(),
 	time.NewModule(),
 	proc.NewModule(),
+	fsize.NewModule(),
 }
 
 func getEnabledModules(args []string) ([]interfaces.NamedModule, *flag.FlagSet) {
