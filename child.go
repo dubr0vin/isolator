@@ -26,7 +26,7 @@ func childMain() {
 			os.Exit(1)
 		}
 	}
-	if err := syscall.Exec(flagSet.Arg(0), flagSet.Args()[1:], os.Environ()); err != nil {
+	if err := syscall.Exec(flagSet.Arg(0), flagSet.Args()[0:], os.Environ()); err != nil {
 		fmt.Printf("Error due to exec: %s", err.Error())
 		os.Exit(1)
 	}

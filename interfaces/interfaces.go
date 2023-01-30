@@ -1,6 +1,9 @@
 package interfaces
 
-import "flag"
+import (
+	"flag"
+	"syscall"
+)
 
 type Module interface {
 	RunAsHost(Host) error
@@ -15,5 +18,5 @@ type NamedModule interface {
 }
 
 type Host interface {
-	AppendCloneFlag(uintptr)
+	GetSysProcAttrPtr() *syscall.SysProcAttr
 }

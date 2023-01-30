@@ -4,14 +4,18 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
+	"github.com/dubr0vin/isolator/module/chroot"
 	"github.com/dubr0vin/isolator/module/pid"
+	"github.com/dubr0vin/isolator/module/user"
 	"github.com/dubr0vin/isolator/module/uts"
 	"os"
 )
 
 var allModules = []interfaces.NamedModule{
-	uts.NewUTSModule(),
-	pid.NewPidModule(),
+	uts.NewModule(),
+	pid.NewModule(),
+	chroot.NewModule(),
+	user.NewModule(),
 }
 
 func getEnabledModules(args []string) ([]interfaces.NamedModule, int, *flag.FlagSet) {
@@ -35,5 +39,5 @@ func getEnabledModules(args []string) ([]interfaces.NamedModule, int, *flag.Flag
 		}
 		enabledModules = append(enabledModules, module)
 	}
-	return allModules, *port, flagSet
+	return enabledModules, *port, flagSet
 }

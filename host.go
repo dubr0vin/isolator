@@ -25,9 +25,7 @@ func hostMain() {
 
 	startServer(address)
 	cmd := exec.Command("/proc/self/exe", "child", address)
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: h.CloneFlags,
-	}
+	cmd.SysProcAttr = &h.SysProcAttr
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -41,11 +39,11 @@ func hostMain() {
 }
 
 type host struct {
-	CloneFlags uintptr
+	SysProcAttr syscall.SysProcAttr
 }
 
-func (h *host) AppendCloneFlag(flag uintptr) {
-	h.CloneFlags |= flag
+func (h *host) GetSysProcAttrPtr() *syscall.SysProcAttr {
+	return &h.SysProcAttr
 }
 
 func startServer(address string) {

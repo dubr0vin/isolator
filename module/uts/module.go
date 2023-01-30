@@ -6,7 +6,7 @@ import (
 	"syscall"
 )
 
-func NewUTSModule() *module {
+func NewModule() *module {
 	return &module{}
 }
 
@@ -14,7 +14,7 @@ type module struct {
 }
 
 func (*module) RunAsHost(h interfaces.Host) error {
-	h.AppendCloneFlag(syscall.CLONE_NEWUTS)
+	h.GetSysProcAttrPtr().Cloneflags |= syscall.CLONE_NEWUTS
 	return nil
 }
 
