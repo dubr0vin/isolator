@@ -4,12 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
+	"github.com/dubr0vin/isolator/module/pid"
 	"github.com/dubr0vin/isolator/module/uts"
 	"os"
 )
 
 var allModules = []interfaces.NamedModule{
 	uts.NewUTSModule(),
+	pid.NewPidModule(),
 }
 
 func getEnabledModules(args []string) ([]interfaces.NamedModule, int, *flag.FlagSet) {
@@ -20,7 +22,7 @@ func getEnabledModules(args []string) ([]interfaces.NamedModule, int, *flag.Flag
 		disabledModules[module.GetName()] = flagSet.Bool("disable-"+module.GetName(), false, "Allow "+module.GetDescription()+" for isolated process")
 		module.Settings(flagSet)
 	}
-	port := flag.Int("rpc-port", 1234, "Port for client rpc server")
+	port := flagSet.Int("rpc-port", 1234, "Port for client rpc server")
 	if err := flagSet.Parse(args[1:]); err != nil {
 		fmt.Printf("Error due to parse args: %s\n", err.Error())
 		os.Exit(1)
