@@ -2,12 +2,13 @@ package interfaces
 
 import (
 	"flag"
+	"net/rpc"
 	"syscall"
 )
 
 type Module interface {
 	RunAsHost(Host) error
-	RunAsChild() error
+	RunAsChild(*rpc.Client) error
 	Settings(*flag.FlagSet)
 }
 

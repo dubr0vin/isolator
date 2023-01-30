@@ -3,6 +3,7 @@ package uts
 import (
 	"flag"
 	"github.com/dubr0vin/isolator/interfaces"
+	"net/rpc"
 	"syscall"
 )
 
@@ -18,7 +19,7 @@ func (*module) RunAsHost(h interfaces.Host) error {
 	return nil
 }
 
-func (*module) RunAsChild() error {
+func (*module) RunAsChild(_ *rpc.Client) error {
 	return nil
 }
 

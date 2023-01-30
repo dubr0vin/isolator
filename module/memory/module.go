@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
+	"net/rpc"
 	"os"
 	"syscall"
 )
@@ -25,7 +26,7 @@ const (
 	DefaultLimit = 64 * 1024 * 1024 //64Mb
 )
 
-func (m *module) RunAsChild() error {
+func (m *module) RunAsChild(_ *rpc.Client) error {
 	limit := *m.limit / uint64(os.Getpagesize())
 	if err := syscall.Setrlimit(RlimitRss, &syscall.Rlimit{
 		Cur: *m.limit / limit,

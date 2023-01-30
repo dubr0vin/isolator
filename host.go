@@ -8,7 +8,10 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+	"time"
 )
+
+var childProcess *os.Process
 
 func hostMain() {
 	enabledModules, _ := getEnabledModules(os.Args)
@@ -31,11 +34,15 @@ func hostMain() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	if err := cmd.Run(); err != nil {
-		fmt.Printf("Error due to run child process: %s\n", err.Error())
+	if err := cmd.Start(); err != nil {
+		fmt.Printf("Error due to start child process: %s\n", err.Error())
 		os.Exit(1)
 	}
-
+	childProcess = cmd.Process
+	if err := cmd.Wait(); err != nil {
+		fmt.Printf("Error due to wair child process: %s\n", err.Error())
+		os.Exit(1)
+	}
 }
 
 type host struct {
@@ -78,5 +85,16 @@ func (h *HostServer) Ping(args string, response *string) error {
 
 func (h *HostServer) GetArgs(args int, response *[]string) error {
 	*response = os.Args
+	return nil
+}
+
+func (h *HostServer) StartTimer(args time.Duration, response *int) error {
+	go func() {
+		time.Sleep(args)
+		if err := syscall.Kill(childProcess.Pid, syscall.SIGKILL); err != nil {
+			fmt.Printf("Error due to kill %v\n", err)
+		}
+		os.Exit(2)
+	}()
 	return nil
 }

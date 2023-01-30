@@ -21,7 +21,7 @@ func childMain() {
 	}
 	enabledModules, flagSet := getEnabledModules(args)
 	for _, module := range enabledModules {
-		if err := module.RunAsChild(); err != nil {
+		if err := module.RunAsChild(client); err != nil {
 			fmt.Printf("Error due to %s.RunAsChild: %s\n", module.GetName(), err.Error())
 			os.Exit(1)
 		}

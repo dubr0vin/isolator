@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
+	"net/rpc"
 	"os"
 	"syscall"
 )
@@ -21,7 +22,7 @@ func (*module) RunAsHost(h interfaces.Host) error {
 	return nil
 }
 
-func (m *module) RunAsChild() error {
+func (m *module) RunAsChild(_ *rpc.Client) error {
 	if err := syscall.Mount(*m.rootfs, *m.rootfs, "", syscall.MS_BIND, ""); err != nil {
 		return fmt.Errorf("mount %v", err)
 	}

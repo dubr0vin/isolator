@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dubr0vin/isolator/interfaces"
+	"net/rpc"
 	"syscall"
 )
 
@@ -29,7 +30,7 @@ func (*module) RunAsHost(h interfaces.Host) error {
 	return nil
 }
 
-func (*module) RunAsChild() error {
+func (*module) RunAsChild(_ *rpc.Client) error {
 	if err := syscall.Setuid(0); err != nil {
 		return fmt.Errorf("setuid %v", err)
 	}
