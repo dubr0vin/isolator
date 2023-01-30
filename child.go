@@ -8,7 +8,7 @@ import (
 )
 
 func childMain() {
-	client, err := rpc.DialHTTP("tcp", os.Args[2])
+	client, err := rpc.DialHTTP("unix", os.Args[2])
 	if err != nil {
 		fmt.Printf("Error due to setup client: %s\n", err.Error())
 		os.Exit(1)
@@ -19,7 +19,7 @@ func childMain() {
 		fmt.Printf("Error due to setup Host.GetArgs: %s\n", err.Error())
 		os.Exit(1)
 	}
-	enabledModules, _, flagSet := getEnabledModules(args)
+	enabledModules, flagSet := getEnabledModules(args)
 	for _, module := range enabledModules {
 		if err := module.RunAsChild(); err != nil {
 			fmt.Printf("Error due to %s.RunAsChild: %s\n", module.GetName(), err.Error())

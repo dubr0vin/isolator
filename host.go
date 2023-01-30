@@ -11,7 +11,7 @@ import (
 )
 
 func hostMain() {
-	enabledModules, port, _ := getEnabledModules(os.Args)
+	enabledModules, _ := getEnabledModules(os.Args)
 	h := &host{}
 
 	for _, module := range enabledModules {
@@ -21,7 +21,7 @@ func hostMain() {
 		}
 	}
 
-	address := fmt.Sprintf("127.0.0.1:%d", port)
+	address := fmt.Sprintf("/tmp/isolator-%d.sock", os.Getpid())
 
 	startServer(address)
 	cmd := exec.Command("/proc/self/exe", "child", address)
@@ -54,7 +54,7 @@ func startServer(address string) {
 	}
 	rpc.HandleHTTP()
 
-	listener, err := net.Listen("tcp", address)
+	listener, err := net.Listen("unix", address)
 	if err != nil {
 		fmt.Printf("Error due to listen: %s\n", err.Error())
 		os.Exit(1)
