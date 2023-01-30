@@ -9,6 +9,7 @@ import (
 	"github.com/dubr0vin/isolator/module/memory"
 	"github.com/dubr0vin/isolator/module/network"
 	"github.com/dubr0vin/isolator/module/pid"
+	"github.com/dubr0vin/isolator/module/proc"
 	"github.com/dubr0vin/isolator/module/time"
 	"github.com/dubr0vin/isolator/module/user"
 	"github.com/dubr0vin/isolator/module/uts"
@@ -24,6 +25,7 @@ var allModules = []interfaces.NamedModule{
 	ipc.NewModule(),
 	memory.NewModule(),
 	time.NewModule(),
+	proc.NewModule(),
 }
 
 func getEnabledModules(args []string) ([]interfaces.NamedModule, *flag.FlagSet) {
